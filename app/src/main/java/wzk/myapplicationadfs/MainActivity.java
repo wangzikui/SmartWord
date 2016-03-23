@@ -1,81 +1,60 @@
 package wzk.myapplicationadfs;
 
+import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
-
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import wzk.myapplicationadfs.fragment.FragmentContent;
-import wzk.myapplicationadfs.fragment.FragmentLesson;
-import wzk.myapplicationadfs.fragment.FragmentUnit;
+import so.orion.slidebar.*;
+import so.orion.gbslidebar.SlideAdapter;
 
 
-public class MainActivity extends FragmentActivity {
 
-    FragmentUnit fragmentUnit;
-    FragmentLesson fragmentLesson;
-    FragmentContent fragmentContent;
-    private RadioGroup bottomRg;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private RadioButton rbOne, rbTwo, rbThree;
+/**
+ * Created by wzk on 2016/3/23.
+ */
+public class MainActivity extends Activity {
+
+    private GBSlideBar gbSlideBar;
+    private SlideAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentUnit = new FragmentUnit();
-        fragmentLesson = new FragmentLesson();
-        fragmentContent = new FragmentContent();
 
-        setFragmentIndicator();
-    }
-    private void setFragmentIndicator() {
+        gbSlideBar = (GBSlideBar) findViewById(R.id.gbslidebar);
 
-        bottomRg = (RadioGroup) findViewById(R.id.bottomRg);
-        rbOne = (RadioButton) findViewById(R.id.rbOne);
-        rbTwo = (RadioButton) findViewById(R.id.rbTwo);
-        rbThree = (RadioButton) findViewById(R.id.rbThree);
+        Resources resources = getResources();
+        mAdapter = new SlideAdapter(resources, new int[]{
+                R.drawable.btn_tag_selector,
+                R.drawable.btn_more_selector,
+                R.drawable.btn_reject_selector});
 
-        bottomRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        mAdapter.setTextColor(new int[]{
+                Color.GREEN,
+                Color.BLUE,
+                Color.RED
+        });
 
+        gbSlideBar.setAdapter(mAdapter);
+        gbSlideBar.setPosition(2);
+        gbSlideBar.setOnGbSlideBarListener(new GBSlideBarListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                fragmentTransaction = fragmentManager.beginTransaction();
-
-                switch (checkedId) {
-                    case R.id.rbOne:
-                        fragmentTransaction.replace(R.id.content,fragmentUnit);
-                        break;
-
-                    case R.id.rbTwo:
-                        fragmentTransaction.replace(R.id.content,fragmentLesson);
-                        break;
-
-                    case R.id.rbThree:
-                        fragmentTransaction.replace(R.id.content,fragmentContent);
-                        break;
-
-                    default:
-                        break;
-                }
-                fragmentTransaction.commit();
+            public void onPositionSelected(int position) {
+                Log.d("edanelx", "selected " + position);
             }
         });
 
-        rbOne.setChecked(true);
     }
+
     /**
      * 菜单、返回键响应
      */
@@ -88,7 +67,6 @@ public class MainActivity extends FragmentActivity {
         }
         return false;
     }
-
 
     /**
      * 双击退出函数
@@ -114,4 +92,3 @@ public class MainActivity extends FragmentActivity {
         }
     }
 }
-

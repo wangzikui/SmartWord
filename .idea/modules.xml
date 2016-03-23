@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/SmartWord.iml" filepath="$PROJECT_DIR$/SmartWord.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/slidebar/slidebar.iml" filepath="$PROJECT_DIR$/slidebar/slidebar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slidebarapp/slidebarapp.iml" filepath="$PROJECT_DIR$/slidebarapp/slidebarapp.iml" />
     </modules>
   </component>
 </project>

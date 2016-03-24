@@ -2,12 +2,17 @@ package wzk.myapplicationadfs;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wzk on 2016/3/23.
  */
 public class UserApplication extends Application {
     private static String Unit = "Unit1";
     private static String Lesson = "1.      Finding fossil man .txt";
+    private static List GroupArray = new ArrayList();
+    private static List ChildArray = new ArrayList();
     private static String ParentPath = "GRE";
     private static String ArticlePath = "";
     @Override
@@ -17,9 +22,7 @@ public class UserApplication extends Application {
         super.onCreate();
     }
 
-    public static String getLesson() {
-        return Lesson;
-    }
+    public static String getLesson() { return Lesson; }
 
     public static String getParentPath() {
         return ParentPath;
@@ -33,6 +36,10 @@ public class UserApplication extends Application {
         return ArticlePath;
     }
 
+    public static List getChildArray() { return ChildArray; }
+
+    public static List getGroupArray() { return GroupArray; }
+
     public static void setLesson(String lesson) {
         Lesson = lesson;
     }
@@ -44,6 +51,10 @@ public class UserApplication extends Application {
     public static void setUnit(String unit) {
         Unit = unit;
     }
+
+    public static void setChildArray(List childArray) { ChildArray = childArray; }
+
+    public static void setGroupArray(List group) { GroupArray = group; }
 
     public static void MakeArticlePath() {
         ArticlePath = ParentPath + "/" + Unit +"/" + Lesson;

@@ -50,14 +50,12 @@ public class MatchUtil {
     }
 
     public static int getLevel(String word, String str){    //level找词专用
-        String[] temp = new String[] {"0", "7"};
+        String[] temp;
         String strTemp = str.trim();
         Pattern p  =  Pattern.compile(word);
         Matcher m  =  p.matcher(str);
         if (m.find()){
             temp = strTemp.split("\t");
-        }
-        if(temp[0].equals(word)){
             return Integer.parseInt(temp[1]);
         }
         return 7;

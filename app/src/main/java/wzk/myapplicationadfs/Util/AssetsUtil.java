@@ -81,14 +81,16 @@ public class AssetsUtil {
 
     public static void makeWordLevelPair(Context context, String[] oriWords){
         HashMap<String , Integer> map = new HashMap<String , Integer>();
-        ArrayList arrayList = getLinesFromTXT(context, "nce4_words");
-        ArrayList tempList = new ArrayList();
+        ArrayList arrayList = getLinesFromTXT(context, "nce4_words");   //获得词表
         String temp;
         int lev;
         for(int i = 0; i < arrayList.size(); i++){
             temp = ((String)arrayList.get(i)).trim();
             for (String str : oriWords){
                 lev = MatchUtil.getLevel(str, temp);
+                if(lev == 7){
+                    continue;
+                }
                 map.put(str, lev);
             }
         }

@@ -3,6 +3,7 @@ package wzk.myapplicationadfs;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public class UserApplication extends Application {
     private static List ChildArray = new ArrayList();
     private static String ParentPath = "GRE";
     private static String ArticlePath = "";
+    private static String[] OriWords;
+    private static HashMap<String , Integer> WordLevelPair;
     @Override
     public void onCreate()
     {
@@ -40,6 +43,14 @@ public class UserApplication extends Application {
 
     public static List getGroupArray() { return GroupArray; }
 
+    public static String[] getOriWords() {
+        return OriWords;
+    }
+
+    public static HashMap<String, Integer> getWordLevelPair() {
+        return WordLevelPair;
+    }
+
     public static void setLesson(String lesson) {
         Lesson = lesson;
     }
@@ -55,6 +66,14 @@ public class UserApplication extends Application {
     public static void setChildArray(List childArray) { ChildArray = childArray; }
 
     public static void setGroupArray(List group) { GroupArray = group; }
+
+    public static void setOriWords(String[] oriWords) {
+        OriWords = oriWords;
+    }
+
+    public static void setWordLevelPair(HashMap<String, Integer> wordLevelPair) {
+        WordLevelPair = wordLevelPair;
+    }
 
     public static void MakeArticlePath() {
         ArticlePath = ParentPath + "/" + Unit +"/" + Lesson;

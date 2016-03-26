@@ -9,15 +9,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import so.orion.gbslidebar.SlideAdapter;
 import so.orion.slidebar.GBSlideBar;
 import so.orion.slidebar.GBSlideBarListener;
-import wzk.myapplicationadfs.Util.AssertsUtil;
+import wzk.myapplicationadfs.Util.AssetsUtil;
 import wzk.myapplicationadfs.adapter.MyExpandableListViewAdapter;
 
 
@@ -30,36 +32,18 @@ public class MainActivity extends Activity {
     private SlideAdapter mAdapter;
     private ExpandableListView expandableListView;
     private MyExpandableListViewAdapter adapter;
+    private TextView article;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        AssertsUtil.makeIndex(this);
+        AssetsUtil.makeIndex(this);
 
+        article = (TextView)findViewById(R.id.article);
         slideBarInit();
+        expListInit();
 
-        expandableListView = (ExpandableListView)findViewById(R.id.expendlist);
-        expandableListView.setGroupIndicator(null);
-
-        // 监听组点击
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
-        // 监听每个分组里子控件的点击事件
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                return false;
-            }
-        });
-        adapter = new MyExpandableListViewAdapter(this);
-        expandableListView.setAdapter(adapter);
     }
 
     public void slideBarInit() {
@@ -84,6 +68,50 @@ public class MainActivity extends Activity {
                 Log.d("edanelx", "selected " + position);
             }
         });
+    }
+
+    public void expListInit(){
+        expandableListView = (ExpandableListView)findViewById(R.id.expendlist);
+        expandableListView.setGroupIndicator(null);
+
+        // 监听组点击
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                String str = UserApplication.getGroupArray().get(groupPosition).toString();
+                UserApplication.setUnit(str);
+                Toast.makeText(MainActivity.this, "unit变更为" + UserApplication.getUnit(), Toast.LENGTH_SHORT).show();
+                //关闭其他组
+                int count = expandableListView.getExpandableListAdapter().getGroupCount();
+                for (int i = 0; i < count; i++) {
+                    if (groupPosition != i) {
+                        expandableListView.collapseGroup(i);
+                    }
+                }
+                return false;
+            }
+        });
+        // 监听每个分组里子控件的点击事件
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String str = ((ArrayList) UserApplication.getChildArray().get(groupPosition)).get(childPosition).toString();
+                UserApplication.setLesson(str);
+                UserApplication.MakeArticlePath();
+                Toast.makeText(MainActivity.this, "path变更为" + UserApplication.getArticlePath(), Toast.LENGTH_SHORT).show();
+                ArrayList arrayList = AssetsUtil.getLinesFromTXT(MainActivity.this, UserApplication.getArticlePath());
+                str = "";
+                for (int i = 0; i < arrayList.size(); i++) {
+                    str += arrayList.get(i);
+                }
+                article.setText(str);
+                return false;
+            }
+        });
+        adapter = new MyExpandableListViewAdapter(this);
+        expandableListView.setAdapter(adapter);
     }
 
 

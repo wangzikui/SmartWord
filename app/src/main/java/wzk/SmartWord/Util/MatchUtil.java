@@ -11,7 +11,7 @@ import wzk.SmartWord.UserApplication;
  * Created by wzk on 2016/3/25.
  */
 public class MatchUtil {
-    public static HashMap<Integer , Integer> getWordsLoc(String ori, String[] words){
+    public static HashMap<Integer , Integer> getWordsLoc(String ori, String[] words){ //获取给定word组在文章中位置
         HashMap<Integer , Integer> map = new HashMap<>();
         int startIndex = 0;
         int wordLenth = 0;
@@ -32,7 +32,7 @@ public class MatchUtil {
         return map;
     }
 
-    public static void findWordsFromAtc(ArrayList arrayList){
+    public static void findWordsFromAtc(ArrayList arrayList){   //从文章中获取单词
         String[] result;
         ArrayList temp = new ArrayList();
         String regex = "^[a-zA-Z]+$";

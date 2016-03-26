@@ -10,14 +10,14 @@ import java.util.List;
  * Created by wzk on 2016/3/23.
  */
 public class UserApplication extends Application {
-    private static String Unit = "Unit1";
-    private static String Lesson = "1.      Finding fossil man .txt";
-    private static List GroupArray = new ArrayList();
-    private static List ChildArray = new ArrayList();
+    private static String Unit = "Unit1";   //单元名
+    private static String Lesson = "1.      Finding fossil man .txt";   //文章文件
+    private static List GroupArray = new ArrayList();   //内含单元名
+    private static List ChildArray = new ArrayList();   //内含文件名
     private static String ParentPath = "GRE";
-    private static String ArticlePath = "";
-    private static String[] OriWords;
-    private static HashMap<String , Integer> WordLevelPair;
+    private static String ArticlePath = ""; //  文件路径
+    private static String[] OriWords;   //文章中出现的单词
+    private static HashMap<String , Integer> WordLevelPair; //文章中出现的单词及其level
     @Override
     public void onCreate()
     {

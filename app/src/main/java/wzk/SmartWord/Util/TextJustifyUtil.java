@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by wzk on 2016/3/26.
  */
 public class TextJustifyUtil {
-    public static String justify(TextView textView,String str,float contentWidth) {
+    public static String justify(TextView textView,String str,float contentWidth) { //对齐入口方法
         String text=str;
         Paint paint=textView.getPaint();
 
@@ -20,7 +20,7 @@ public class TextJustifyUtil {
     }
 
 
-    private static ArrayList<String> lineBreak(String text,Paint paint,float contentWidth){
+    private static ArrayList<String> lineBreak(String text,Paint paint,float contentWidth){ //将字符串分解为词，判断是否插空，插多少空
         String [] wordArray=text.split("\\s");
         ArrayList<String> lineList = new ArrayList<String>();
         String myText="";
@@ -38,7 +38,7 @@ public class TextJustifyUtil {
         return lineList;
     }
 
-    private static String justifyLine(String text,int totalSpacesToInsert){
+    private static String justifyLine(String text,int totalSpacesToInsert){ //插空
         String[] wordArray=text.split("\\s");
         String toAppend=" ";
 

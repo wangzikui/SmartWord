@@ -37,16 +37,16 @@ public class MainActivity extends Activity {
     private ExpandableListView expandableListView;
     private MyExpandableListViewAdapter adapter;
     private TextView article;
-    private ArrayList atcArrayList;
+    private ArrayList atcArrayList; //分段存储文章内容
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AssetsUtil.makeIndex(this);
+        AssetsUtil.makeIndex(this);     //建立目录
 
         article = (TextView)findViewById(R.id.article);
-
+        //获取屏宽
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
@@ -55,15 +55,15 @@ public class MainActivity extends Activity {
         article.setLineSpacing(0f, 1.5f);
         article.setTextSize(8*(float)width/640f);
 
-        slideBarInit();
-        expListInit();
+        slideBarInit(); //滑动条初始化
+        expListInit();  //下拉菜单初始化
 
     }
 
     public void slideBarInit() {
         gbSlideBar = (GBSlideBar) findViewById(R.id.gbslidebar);
         Resources resources = getResources();
-        mAdapter = new SlideAdapter(resources, new int[]{
+        mAdapter = new SlideAdapter(resources, new int[]{   //设置按钮图片
                 R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector,
@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
                 R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector});
 
-        mAdapter.setTextColor(new int[]{
+        mAdapter.setTextColor(new int[]{    //设置字体颜色
                 Color.CYAN,
                 Color.BLUE,
                 Color.GREEN,
@@ -85,14 +85,14 @@ public class MainActivity extends Activity {
         gbSlideBar.setOnGbSlideBarListener(new GBSlideBarListener() {
             @Override
             public void onPositionSelected(int position) {
-                highLight(position);
+                highLight(position);    //滑条位置事件为设置高亮
             }
         });
     }
 
-    public void expListInit(){
+    public void expListInit(){  //下拉菜单初始化
         expandableListView = (ExpandableListView)findViewById(R.id.expendlist);
-        expandableListView.setGroupIndicator(null);
+        expandableListView.setGroupIndicator(null); //不显示左侧默认下拉控件
 
         // 监听组点击
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 String str = UserApplication.getGroupArray().get(groupPosition).toString();
                 UserApplication.setUnit(str);
-                Toast.makeText(MainActivity.this, "unit变更为" + UserApplication.getUnit(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "unit变更为" + UserApplication.getUnit(), Toast.LENGTH_SHORT).show();
                 //关闭其他组
                 int count = expandableListView.getExpandableListAdapter().getGroupCount();
                 for (int i = 0; i < count; i++) {
@@ -117,17 +117,17 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                String str = ((ArrayList) UserApplication.getChildArray().get(groupPosition)).get(childPosition).toString();
+                String str = ((ArrayList) UserApplication.getChildArray().get(groupPosition)).get(childPosition).toString();    //得文件名
                 UserApplication.setLesson(str);
-                UserApplication.MakeArticlePath();
-                atcArrayList = AssetsUtil.getATCinLine(MainActivity.this, article, UserApplication.getArticlePath());
-                MatchUtil.findWordsFromAtc(atcArrayList);
-                AssetsUtil.makeWordLevelPair(MainActivity.this, UserApplication.getOriWords());
+                UserApplication.MakeArticlePath();  //构造文件路径
+                atcArrayList = AssetsUtil.getATCinLine(MainActivity.this, article, UserApplication.getArticlePath());   //构造文章内容
+                MatchUtil.findWordsFromAtc(atcArrayList);   // 获取文章词汇
+                AssetsUtil.makeWordLevelPair(MainActivity.this, UserApplication.getOriWords());     //构造词汇等级键值对
                 str = "";
                 for (int i = 0; i < atcArrayList.size(); i++) {
                     str += atcArrayList.get(i);
                 }
-                article.setText(str);
+                article.setText(str);   //显示文章
 
                 return false;
             }
@@ -141,15 +141,15 @@ public class MainActivity extends Activity {
             return;
         }
         String[] targetWords;
-        targetWords = AssetsUtil.catchTargetWords(UserApplication.getWordLevelPair(), level);
+        targetWords = AssetsUtil.catchTargetWords(UserApplication.getWordLevelPair(), level);   //获取制定等级词汇
         HashMap<Integer , Integer> wordsLoc;
         String str = "";
 
         for(int i = 0; i < atcArrayList.size(); i++){
             str += atcArrayList.get(i).toString();
         }
-        wordsLoc = MatchUtil.getWordsLoc(str, targetWords);
-        article.setText(TXTUtil.getHighLitStr(str, wordsLoc));
+        wordsLoc = MatchUtil.getWordsLoc(str, targetWords);     //获取各待高亮单词在文章中位置
+        article.setText(TXTUtil.getHighLitStr(str, wordsLoc));  //设置高亮
     }
 
 

@@ -19,7 +19,7 @@ import wzk.SmartWord.UserApplication;
  * Created by wzk on 2016/3/24.
  */
 public class AssetsUtil {
-    public static void makeIndex(Context context){
+    public static void makeIndex(Context context){  //建立目录，用于构建下拉菜单
         ArrayList<String> list;
         ArrayList<ArrayList<String>> subList = new ArrayList<>();
         String str;
@@ -34,7 +34,7 @@ public class AssetsUtil {
         UserApplication.setChildArray(subList);
     }
 
-    public static ArrayList<String> getFileList(String path, Context context) {
+    public static ArrayList<String> getFileList(String path, Context context) { //获取当前目录下属所有文件名
         String[] temp = null;
         ArrayList<String> body = new ArrayList<>();
         Activity activity = (Activity) context;
@@ -46,7 +46,7 @@ public class AssetsUtil {
         return body;
     }
 
-    public static ArrayList<String> getLinesFromTXT(Context context, String fileName){     //按行获取txt内容
+    public static ArrayList<String> getLinesFromTXT(Context context, String fileName){     //按行获取txt内容，主用于读取单词表
         ArrayList<String> arrayList = new ArrayList<>(800);
         String line;
         try {
@@ -62,14 +62,14 @@ public class AssetsUtil {
         return arrayList;
     }
 
-    public static ArrayList<String> getATCinLine(Context context, TextView textView, String fileName){     //按行获取txt内容
+    public static ArrayList<String> getATCinLine(Context context, TextView textView, String fileName){     //按行获取txt内容，主用于读取文章
         ArrayList<String> arrayList = new ArrayList<>(100);
         String line;
         try {
             InputStreamReader inputReader = new InputStreamReader(context.getAssets().open(fileName));
             BufferedReader bufReader = new BufferedReader(inputReader);
             while((line = bufReader.readLine()) != null){
-                line = TextJustifyUtil.justify(textView, line, textView.getWidth());
+                line = TextJustifyUtil.justify(textView, line, textView.getWidth());    //交由TextJustifyUtil修正，使之分散对齐
                 line += "\r\n";
                 arrayList.add(line);
             }
@@ -79,7 +79,7 @@ public class AssetsUtil {
         return arrayList;
     }
 
-    public static String[] catchTargetWords(HashMap<String , Integer> wordLevelPair, int level){
+    public static String[] catchTargetWords(HashMap<String , Integer> wordLevelPair, int level){    //指定level获取符合的words
         ArrayList<String> arrayList = new ArrayList<>();
         String[] result;
         for (Map.Entry<String, Integer> entry : wordLevelPair.entrySet()) {
@@ -92,7 +92,7 @@ public class AssetsUtil {
         return result;
     }
 
-    public static void makeWordLevelPair(Context context, String[] oriWords){
+    public static void makeWordLevelPair(Context context, String[] oriWords){   //由word组生成wordlevel对放入application
         HashMap<String , Integer> map = new HashMap<>();
         ArrayList<String> arrayList = getLinesFromTXT(context, "nce4_words");   //获得词表
         String temp;

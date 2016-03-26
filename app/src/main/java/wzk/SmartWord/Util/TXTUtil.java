@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by wzk on 2016/3/25.
  */
 public class TXTUtil {
-    public static SpannableString getHighLitStr(String oriString, HashMap<Integer , Integer> map){  //hashmap是word位置
+    public static SpannableString getHighLitStr(String oriString, HashMap<Integer , Integer> map){  //设置高亮，hashmap是word位置
         SpannableString sp = new SpannableString(oriString);
         Iterator iter = map.entrySet().iterator();
         Map.Entry entry;

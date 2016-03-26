@@ -3,6 +3,7 @@ package wzk.myapplicationadfs.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class AssetsUtil {
         }
         UserApplication.setChildArray(subList);
     }
+
     public static ArrayList getFileList(String path, Context context) {
         String[] temp = null;
         ArrayList body = new ArrayList();
@@ -46,17 +48,29 @@ public class AssetsUtil {
     }
 
     public static ArrayList getLinesFromTXT (Context context, String fileName){     //按行获取txt内容
-        ArrayList arrayList;
-        if (fileName == "nce4_words"){
-            arrayList = new ArrayList(800);
-        }else {
-            arrayList = new ArrayList(100);
-        }
+        ArrayList arrayList = new ArrayList(800);
         String line="";
         try {
             InputStreamReader inputReader = new InputStreamReader(((Activity)context).getAssets().open(fileName));
             BufferedReader bufReader = new BufferedReader(inputReader);
             while((line = bufReader.readLine()) != null){
+                line += "\r\n";
+                arrayList.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+    public static ArrayList getATCinLine (Context context, TextView textView, String fileName){     //按行获取txt内容
+        ArrayList arrayList = new ArrayList(100);
+        String line="";
+        try {
+            InputStreamReader inputReader = new InputStreamReader(((Activity)context).getAssets().open(fileName));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            while((line = bufReader.readLine()) != null){
+                line = TextJustifyUtil.justify(textView, line, textView.getWidth());
                 line += "\r\n";
                 arrayList.add(line);
             }

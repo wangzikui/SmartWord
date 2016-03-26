@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -13,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import so.orion.gbslidebar.SlideAdapter;
 import so.orion.slidebar.GBSlideBar;
 import so.orion.slidebar.GBSlideBarListener;
 import wzk.myapplicationadfs.Util.AssetsUtil;
 import wzk.myapplicationadfs.Util.MatchUtil;
+import wzk.myapplicationadfs.Util.TXTUtil;
 import wzk.myapplicationadfs.adapter.MyExpandableListViewAdapter;
 
 public class TestActivity extends Activity
@@ -37,6 +41,15 @@ public class TestActivity extends Activity
         AssetsUtil.makeIndex(this);
 
         article = (TextView)findViewById(R.id.article);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+        int width = dm.widthPixels;
+//根据屏幕调整文字大小
+        article.setLineSpacing(0f, 1.5f);
+        article.setTextSize(8*(float)width/640f);
+
         slideBarInit();
         expListInit();
 
@@ -99,15 +112,16 @@ public class TestActivity extends Activity
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                ArrayList temp = new ArrayList();
                 String str = ((ArrayList) UserApplication.getChildArray().get(groupPosition)).get(childPosition).toString();
                 UserApplication.setLesson(str);
                 UserApplication.MakeArticlePath();
-                atcArrayList = AssetsUtil.getLinesFromTXT(TestActivity.this, UserApplication.getArticlePath());
+                atcArrayList = AssetsUtil.getATCinLine(TestActivity.this, article ,UserApplication.getArticlePath());
                 MatchUtil.findWordsFromAtc(atcArrayList);
                 AssetsUtil.makeWordLevelPair(TestActivity.this, UserApplication.getOriWords());
                 str = "";
                 for (int i = 0; i < atcArrayList.size(); i++){
-                   str += atcArrayList.get(i);
+                    str += atcArrayList.get(i);
                 }
                 article.setText(str);
 
@@ -125,11 +139,13 @@ public class TestActivity extends Activity
         String[] oriWords = UserApplication.getOriWords();
         String[] targetWords = null;
         targetWords = AssetsUtil.catchTargetWords(UserApplication.getWordLevelPair(), level);
+        HashMap<Integer , Integer> wordsLoc;
         String str = "";
-        for (String s : targetWords){
-            s +="\r\n";
-            str += s;
+
+        for(int i = 0; i < atcArrayList.size(); i++){
+            str += atcArrayList.get(i).toString();
         }
-        article.setText(str);
+        wordsLoc = MatchUtil.getWordsLoc(str, targetWords);
+        article.setText(TXTUtil.getHighLitStr(str, wordsLoc));
     }
 }

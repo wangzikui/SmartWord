@@ -1,4 +1,4 @@
-package wzk.myapplicationadfs.adapter;
+package wzk.SmartWord.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import wzk.myapplicationadfs.R;
-import wzk.myapplicationadfs.UserApplication;
+import wzk.SmartWord.R;
+import wzk.SmartWord.UserApplication;
 
 /**
  * Created by wzk on 2016/3/24.
@@ -147,7 +147,7 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
         }
 
         if (!isExpanded) {
-            groupHolder.expState.setBackgroundResource(R.drawable.ok);
+            groupHolder.expState.setBackgroundResource(R.drawable.notok);
         }
         else {
             groupHolder.expState.setBackgroundResource(R.drawable.ok);

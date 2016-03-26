@@ -1,4 +1,4 @@
-package wzk.myapplicationadfs;
+package wzk.SmartWord;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

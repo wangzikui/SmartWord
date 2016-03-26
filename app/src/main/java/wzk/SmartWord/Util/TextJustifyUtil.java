@@ -1,4 +1,4 @@
-package wzk.myapplicationadfs.Util;
+package wzk.SmartWord.Util;
 
 import android.graphics.Paint;
 import android.text.TextUtils;

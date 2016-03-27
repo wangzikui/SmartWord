@@ -26,6 +26,7 @@ public class TextJustifyUtil {
         String myText="";
 
         for(String word:wordArray){
+
             if(paint.measureText(myText+" "+word)<=contentWidth)
                 myText=myText+" "+word;
             else{

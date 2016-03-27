@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity {
     private MyExpandableListViewAdapter adapter;
     private TextView article;
     private ArrayList atcArrayList; //分段存储文章内容
+    private HashMap<Integer , Integer> allWordsLoc; //所有单词位置
+    private HashMap<Integer , Integer> targetWordsLoc; //目标单词位置
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,37 @@ public class MainActivity extends Activity {
         int width = dm.widthPixels;
         //根据屏幕调整文字大小
         article.setLineSpacing(0f, 1.5f);
-        article.setTextSize(8*(float)width/640f);
-
+        article.setTextSize(8 * (float) width / 640f);
+//        article.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {     //解决焦点锁死
+//                boolean ret = false;
+//                CharSequence text = ((TextView) v).getText();
+//                Spannable stext = Spannable.Factory.getInstance().newSpannable(text);
+//                TextView widget = (TextView) v;
+//                int action = event.getAction();
+//                if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN){
+//                    int x = (int)event.getX();
+//                    int y = (int)event.getY();
+//                    x -= widget.getTotalPaddingLeft();
+//                    y -= widget.getTotalPaddingTop();
+//                    x += widget.getScrollX();
+//                    y += widget.getScrollY();
+//                    Layout layout = widget.getLayout();
+//                    int line = layout.getLineForVertical(y);
+//                    int off = layout.getOffsetForHorizontal(line ,x);
+//                    ClickableSpan[] link = stext.getSpans(off, off, ClickableSpan.class);
+//                    if (link.length != 0){
+//                        if (action == MotionEvent.ACTION_UP){
+//                            link[0].onClick(widget);
+//                        }
+//                        ret = true;
+//                    }
+//                }
+//                return ret;
+//            }
+//        });
+        article.setMovementMethod(LinkMovementMethod.getInstance());    //响应点击
         slideBarInit(); //滑动条初始化
         expListInit();  //下拉菜单初始化
 
@@ -121,13 +153,14 @@ public class MainActivity extends Activity {
                 UserApplication.setLesson(str);
                 UserApplication.MakeArticlePath();  //构造文件路径
                 atcArrayList = AssetsUtil.getATCinLine(MainActivity.this, article, UserApplication.getArticlePath());   //构造文章内容
-                MatchUtil.findWordsFromAtc(atcArrayList);   // 获取文章词汇
+                MatchUtil.findWordsFromAtc(atcArrayList);   // 获取文章课后词汇
                 AssetsUtil.makeWordLevelPair(MainActivity.this, UserApplication.getOriWords());     //构造词汇等级键值对
                 str = "";
                 for (int i = 0; i < atcArrayList.size(); i++) {
-                    str += atcArrayList.get(i);
+                    str += atcArrayList.get(i); //该段比较耗时
                 }
-                article.setText(str);   //显示文章
+                allWordsLoc = MatchUtil.getAllWordsLoc(str);    //获取所有单词位置
+                article.setText(TXTUtil.getSpannedStr(str, allWordsLoc));   //显示带有点击事件的文章
 
                 return false;
             }
@@ -142,14 +175,13 @@ public class MainActivity extends Activity {
         }
         String[] targetWords;
         targetWords = AssetsUtil.catchTargetWords(UserApplication.getWordLevelPair(), level);   //获取制定等级词汇
-        HashMap<Integer , Integer> wordsLoc;
         String str = "";
 
         for(int i = 0; i < atcArrayList.size(); i++){
             str += atcArrayList.get(i).toString();
         }
-        wordsLoc = MatchUtil.getWordsLoc(str, targetWords);     //获取各待高亮单词在文章中位置
-        article.setText(TXTUtil.getHighLitStr(str, wordsLoc));  //设置高亮
+        targetWordsLoc = MatchUtil.getWordsLoc(str, targetWords);     //获取各待高亮单词在文章中位置
+        article.setText(TXTUtil.getSpannedStr(str, allWordsLoc, targetWordsLoc));  //设置点击与高亮
     }
 
 

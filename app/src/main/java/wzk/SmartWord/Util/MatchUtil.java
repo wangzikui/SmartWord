@@ -32,7 +32,17 @@ public class MatchUtil {
         return map;
     }
 
-    public static void findWordsFromAtc(ArrayList arrayList){   //从文章中获取单词
+    public static HashMap<Integer , Integer> getAllWordsLoc(String ori){    //获取所有单词位置
+        HashMap<Integer , Integer> map = new HashMap<>();
+        Pattern pt = Pattern.compile("\\b[A-Za-z]+\\b");
+        Matcher mt = pt.matcher(ori);
+        while (mt.find()){
+            map.put(mt.start(), mt.end());
+        }
+        return map;
+    }
+
+    public static void findWordsFromAtc(ArrayList arrayList){   //从文章中获取课后单词
         String[] result;
         ArrayList temp = new ArrayList();
         String regex = "^[a-zA-Z]+$";

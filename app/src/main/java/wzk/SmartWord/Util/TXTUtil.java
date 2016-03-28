@@ -31,9 +31,7 @@ public class TXTUtil {
                     Spanned s = (Spanned) tv.getText();
                     int start = s.getSpanStart(this);
                     int end = s.getSpanEnd(this);
-                    ((TextView) widget).setText(sp);
                     sp.removeSpan(bcs);
-                    ((TextView) widget).setText(sp);
                     sp.setSpan(bcs, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     ((TextView) widget).setText(sp);
                 }

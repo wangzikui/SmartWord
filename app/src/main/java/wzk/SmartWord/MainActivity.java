@@ -73,9 +73,11 @@ public class MainActivity extends Activity {
                 R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector,
+                R.drawable.btn_tag_selector,
                 R.drawable.btn_tag_selector});
 
         mAdapter.setTextColor(new int[]{    //设置字体颜色
+                Color.BLACK,
                 Color.CYAN,
                 Color.BLUE,
                 Color.GREEN,
@@ -89,7 +91,7 @@ public class MainActivity extends Activity {
         gbSlideBar.setOnGbSlideBarListener(new GBSlideBarListener() {
             @Override
             public void onPositionSelected(int position) {
-                highLight(position);    //滑条位置事件为设置高亮
+                highLight(position - 1);    //滑条位置事件为设置高亮
             }
         });
     }
@@ -136,8 +138,9 @@ public class MainActivity extends Activity {
                 }
                 allWordsLoc = MatchUtil.getAllWordsLoc(atcString);    //获取所有单词位置
                 article.setText(TXTUtil.getSpannedStr(atcString, allWordsLoc));   //显示带有点击事件的文章
+                gbSlideBar.setPosition(0);
 
-                return false;
+                return true;
             }
         });
         adapter = new MyExpandableListViewAdapter(this);
@@ -146,6 +149,10 @@ public class MainActivity extends Activity {
 
     public void highLight(int level){
         if(atcArrayList == null){
+            return;
+        }
+        if (level < 0){ //滑块为全灭时
+            article.setText(TXTUtil.getSpannedStr(atcString, allWordsLoc));
             return;
         }
         String[] targetWords;

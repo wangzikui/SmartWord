@@ -11,8 +11,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="470dp"
-            android:id="@+id/scrollView" >
+            android:layout_height="500dp"
+            android:id="@+id/scrollView">
 
             <TextView
                 android:layout_width="match_parent"
